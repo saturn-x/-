@@ -1,0 +1,122 @@
+<!-- /*
+*author:gzhu_ruiop
+*date：2021-01-13
+*des：会议管理系统···用户已经预定的界面，可以实现退订
+*/ -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>会议室管理系统-预定界面</title>
+    <!-- <link rel="stylesheet" type="text/css" href="css/zzsc.css"> -->
+    <link rel="stylesheet" href="css/dcalendar.picker.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <div class="container" id="top">
+        <div class="jumbotron">
+          <h1>会议室管理系统</h1>
+          <h4>Conference room management system</h4>
+          <br>
+          <br>
+          <div class="row">
+            <p><a class="btn btn-primary btn-lg" href="#" role="button" id="welcome_span">Welcome!</a></p>
+            <h4><a class="pull-right" href="#" role="button" id="main_to">预定界面</a></h4>
+            &nbsp;
+            <h4><a class="pull-right" href="login.html" role="button" id="welcome_span">登出</a></h4>
+          </div>
+        </div>
+      </div>
+    </header>
+    <bodyer>
+        <div class="container">
+            <div class="container" style="padding-top: 40px;"><!--整个盒子居中-->
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><h4>已预定的会议室</h4></div>
+                        <table class="table table-bordered table-hover" id="table_add">
+                            <tr>
+                                <th>楼号</th>
+                                <th>门牌</th>
+                                <th>日期</th>
+                                <th>时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </bodyer>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/dcalendar.picker.js"></script>
+</html>
+    <script>
+    $(document).ready(function()
+    {
+        //拿到跳转的参数
+        var paras = location.search;            //search获得地址中的参数，内容为'?itemId=12'
+        var result = paras.match(/[^\?&]*=[^&]*/g);     //match是字符串中符合的字段一个一个取出来，result中的值为['login=xx','table=admin']
+        paras = {};                    //让paras变成没有内容的json对象
+        for(i in result){
+            var temp = result[i].split('=');    //split()将一个字符串分解成一个数组,两次遍历result中的值分别为['itemId','xx']
+            paras[temp[0]] = temp[1];
+        }
+        var username = paras.username;     //根据参数名"itemId"，获取参数值
+        $('#welcome_span').html("WELCOME!  用户名："+username+"！");
+        console.log(username);
+        $('#main_to').attr('href','index.html?username='+username);
+        $.post('query.php',
+        {
+            style:"find",
+            username:username,
+        },function(result)
+        {
+            console.log(result);
+            var json=jQuery.parseJSON(result);
+
+            for(var i = 0;i<json.length;i++)
+            {
+                var building=json[i].building;
+                var room=json[i].roomnum;
+                var usingdate=json[i].usingdate;
+                var usingtime=json[i].usingtime;
+                var id=json[i].ID;
+                var str_using_time="";
+                if(usingtime==1){
+                str_using_time="早上";
+                }else if(usingtime==2){
+                str_using_time="下午";
+                }else{
+                str_using_time="晚上";
+                }
+                var str="<tr><td>"+building+"</td>";
+                str=str+"<td>"+room+"</td>";
+                str=str+"<td>"+usingdate+"</td>";
+                str=str+"<td>"+str_using_time+"</td>";
+                str=str+"<td><button class=\"btn btn-danger col-md-offset-4\" style=\"height: 30px;\" id='"+id+"'  onclick='click_func(this)'>退订</td></tr>";
+                $('#table_add').append(str);
+            }
+        });
+    });
+    function click_func(elem)
+    {
+        console.log(elem.id);
+        $.post('query.php',
+        {
+            style:"delete",
+            id:elem.id,
+        },function(result){
+        if(result[0]== 'O')
+            {
+                alert("删除成功");
+                window.location.reload();
+            }
+        });
+    }
+</script>

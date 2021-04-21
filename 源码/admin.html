@@ -1,0 +1,442 @@
+<!-- /*
+*author:gzhu_ruiop
+*date：2021-01-13
+*des：会议管理系统···管理会议室显示窗口
+*维护数据库中的会议室表、对会议室的属性进行增删改查
+*/ -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>会议室管理系统-管理界面</title>
+    <!-- <link rel="stylesheet" type="text/css" href="css/zzsc.css"> -->
+    <link rel="stylesheet" href="css/dcalendar.picker.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <div class="container" id="top">
+        <div class="jumbotron">
+          <h1>会议室管理系统</h1>
+          <h4>Conference room management system</h4>
+          <br>
+          <br>
+          <p><a class="btn btn-primary btn-lg" href="#" role="button">Welcome</a></p>
+        </div>
+      </div>
+      <div class="container">
+        <h4>
+        <ol class="breadcrumb">
+          <li class="active">管理</li>
+        </ol>
+        </h4>
+    </div>
+    </header>
+    <bodyer>
+      <!-- 会议室 -->
+      <div class="container" >
+            <div class="panel panel-primary "  class="container-fluid" ID="all">
+              <!-- 标题 -->
+                <div class="row">
+                  <div class="container">
+                    <div class="col-md-12"><h3>管理会议室<h5>Manage of conference room</h5></h3></div>
+                  </div>
+                </div>
+            </div>    
+      </div>
+      <!-- 增加楼号 -->
+      <div class="container" >
+        <div class="panel panel-primary "  class="container-fluid" ID="all">
+          <!-- 标题 -->
+            <div class="row">
+              <div class="container">
+                <div class="col-md-12"><h4>选择操作的楼号</h4></div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="pagination pagination-md" id="add_building_li">
+                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+        </div>    
+      </div><!-- 增加楼号 -->
+      <!--列出所有的房间 -->
+      <div class="container ">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="row">
+            <div class="panel-heading text-center"><h3 id="building_name">楼号</h3><button class="btn btn-info add pull-right" data-toggle="modal" data-target="#addModal" style="margin-bottom: 10px;margin-right: 10px;" id="add_room_btn">增加</button></div>
+          </div>
+          <!-- Table -->
+          <table class="table table-striped">
+            <tr>
+              <th>门牌号</th>
+              <th>容量</th>
+              <th>属性</th>
+              <th>操作</th>
+            </tr>
+          </table>
+        </div>
+      </div><!--列出所有的房间 -->
+      <!-- 增加楼号模态框 -->
+      <div class="modal fade" id="add_building_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+              </button>
+              <h4 class="modal-title" id="myModalLabel">
+                <span>请输入建筑楼号:</span>
+              </h4>
+            </div>
+            <div class="container" style=" padding-top: 10px; padding-bottom: 10px;">
+              <input type="text" class="form-control" placeholder="BUILDING" aria-describedby="basic-addon1" style="width: 200px;" id="add_building_input">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" >
+                关闭
+              </button>
+              <button type="button" class="btn btn-primary" id="add_building_btn">
+                提交更改
+              </button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+      <!-- 删除楼号模态框 -->
+      <div class="modal fade" id="del_building_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+              </button>
+              <h4 class="modal-title" id="myModalLabel">
+                <span>删除建筑楼号:</span>
+              </h4>
+            </div>
+            <div class="container" style=" padding-top: 10px; padding-bottom: 10px;" id="del_building_content">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" >
+                关闭
+              </button>
+              <button type="button" class="btn btn-primary" id="del_building_btn">
+                提交更改
+              </button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->      
+       <!--修改修改房间模态框-->
+      <div class="modal fade up" tabindex="-1" role="dialog" id="updateModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">修改</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <input type="text" placeholder="容量" id="update_capicity" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <input type="text" placeholder="属性" class="form-control" id="update_capicity"/>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary que_update">确定</button><!--确定修改-->
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!--修改房间-->
+      <!--增加房间模态框-->
+      <div class="modal fade addmd" tabindex="-1" role="dialog" id="addModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">增加</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="panel panel-primary" style="padding-top:10px;padding-left:10px;padding-right: 10px;">
+                  <div class="form-group">
+                    <input type="text" placeholder="门牌1" id="add_id1" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <input type="text" placeholder="容量1" id="add_capacity1" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <input type="text" placeholder="属性1" class="form-control" id="add_attribute1"/>
+                  </div>
+                </div>
+                <div class="panel panel-primary" style="padding-top:10px;padding-left:10px;padding-right: 10px;">
+                  <div class="form-group">
+                    <input type="text" placeholder="门牌2" id="add_id2" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <input type="text" placeholder="容量2" id="add_capacity2" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <input type="text" placeholder="属性2" class="form-control" id="add_attribute2"/>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default cancel" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary que_add">确定</button><!--确定添加-->
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!--增加房间模态框-->
+    </bodyer>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/dcalendar.picker.js"></script>
+  </body>
+</html>
+<script>
+  var building=Array();//该数组是保存所有从数组库读出来的建筑楼号
+  var str_select_building=null //该变量是保存选中的建筑楼号，传给添加到get后进行该建筑的遍历
+  $(document).ready(function()
+  {
+    var paras = location.search;            //search获得地址中的参数，内容为'?itemId=12'
+    var result = paras.match(/[^\?&]*=[^&]*/g);     //match是字符串中符合的字段一个一个取出来，result中的值为['login=xx','table=admin']
+    paras = {};                    //让paras变成没有内容的json对象
+    for(i in result){
+        var temp = result[i].split('=');    //split()将一个字符串分解成一个数组,两次遍历result中的值分别为['itemId','xx']
+        paras[temp[0]] = temp[1];
+    }
+    //select_building是选中的building
+    var select_building = paras.building;
+    str_select_building = unescape(select_building);
+    if(str_select_building=="please_select_building")
+    {
+      $('#add_room_btn').hide();
+    }
+    $('#building_name').html('楼号：'+str_select_building);
+    //初始化 遍历出所有的房间
+    find_tables();
+    //增加楼号的按钮
+    $('#add_building_btn').click(function()
+    {
+      var add_building=$('#add_building_input').val();
+      $.get('admin.php',{
+        add_building:add_building,
+        style:"add_building",
+      },function(result){
+        console.log(result);
+        find_tables();
+      });
+    
+      $('#add_building_modal').modal('hide');
+    });
+    $('#del_building_btn').click(function()
+    {
+      var checked=Array()
+      var checked_str="" //first,asd
+      $("input:checkbox:checked").each(function()
+      {
+            checked.push($(this).val());
+            checked_str+=$(this).val()+",";
+      });
+      $.get('admin.php',{
+        style:"del_building",
+        building:checked_str,
+      },function(result){
+        ShowSuccess("删除楼号成功");
+        console.log(result);
+        window.location.reload();
+      })
+      
+    
+    });
+    //根据select_building 写入表格数据
+    $.post('init.php',{},function(result)
+    {
+      console.log("初始化"+result)
+      var parsedJson = jQuery.parseJSON(result);
+      var str=''
+      for (var i=0;i<parsedJson.length;i++)
+      {
+        if(parsedJson[i].building==str_select_building)
+        {
+          //这里拼出一个id  先是全局的被选中的建筑号 str_select_building 再拼上id first_1 
+          var tmp=str_select_building+"_"+parsedJson[i].ID;
+          str+='<tr id="'+tmp+'tr'+'"><td>'+parsedJson[i].ID+'</td><td>'+parsedJson[i].capacity+'</td><td>'+parsedJson[i].attribute+'</td><td><button class="btn btn-primary btn-xs update" data-toggle = "modal" data-target = "#updateModal" id="'+tmp+'">修改</button><button class="btn btn-danger btn-xs del"  id="'+tmp+'">删除</button></td></tr>'
+        }
+      }
+      //用for循环将json文件里拼接成字符串
+      $(".table").append(str)
+      //将刚才保存的字符串append（在被选元素的结尾（仍然在内部）插入指定内容）到我们的HTML里面
+    });
+  });
+  $(".que_add").click(function()
+  {//点开增加按钮弹出的模态框后的确定按钮事件
+    var arr=[]
+    var num=$(".table tr").length
+    var str=''
+    var id1=$(this).parent().siblings().find("#add_id1").val()//找到input框的内容并存放在命名为name的变量中
+    var capacity1=$(this).parent().siblings().find("#add_capacity1").val()//找到input框的内容并存放在命名为name的变量中
+    var attribute1=$(this).parent().siblings().find("#add_attribute1").val()//找到input框的内容并存放在命名为name的变量中
+    var id2=$(this).parent().siblings().find("#add_id2").val()//找到input框的内容并存放在命名为name的变量中
+    var capacity2=$(this).parent().siblings().find("#add_capacity2").val()//找到input框的内容并存放在命名为name的变量中
+    var attribute2=$(this).parent().siblings().find("#add_attribute2").val()//找到input框的内容并存放在命名为name的变量中
+    //console.log(id1+capacity1+attribute1+id2+capacity2+attribute2);
+    if (id1==0||capacity1==0||attribute1==0||id2==0||capacity2==0||attribute2==0) 
+    {//判断内容是否为空，否则弹窗"请输入一点东西"
+      alert("请输入完整");
+      return
+    } 
+      $.get('admin.php',
+      {
+        style:"add_room",
+        building:str_select_building,
+        id1:id1,capacity1:capacity1,attribute1:attribute1,
+        id2:id2,capacity2:capacity2,attribute2:attribute2,
+      },function(result)
+      {
+        console.log(result);
+        ShowSuccess("增加成功");
+        $(".addmd").modal("hide")
+        console.log("点击增加");
+        window.location.reload();
+      });
+  });
+  //删除房间 得到id进行删除 例如id=first_1
+  $(document).on("click",".del",function()
+  {//找到点击的类目为del的按钮实现删除
+      console.log("点击删除键"+this.id);
+      var id=this.id;
+      $.get('admin.php',{
+        style:"del_room",
+        building_room:id,
+      },function(result){
+        ShowMsg("删除成功"+'#'+id+'tr');
+        $('#'+id+'tr').remove();
+      });
+    })
+  var _this=null
+  $(document).on("click",".update",function()
+  {
+    //拿到点击修改的id 
+    _this=this.id
+  });
+  //确定修改
+  $(".que_update").click(function()
+  {//同增加事件
+    var arr=Array();
+    $(this).parent().siblings().find("input").each(function()
+    {
+      arr.push($(this).val());
+      $(this).val("");
+    })
+    $.get('admin.php',
+    {
+        style:"update_room",
+        building_room:_this,
+        capacity:arr[0],
+        attribute:arr[1]
+    },function(result){
+      console.log(result);
+      ShowSuccess("修改成功");
+      window.location.reload();
+    });
+    //弹出模态框
+    $(".up").modal("hide");
+  });
+  //主界面的删除按钮 载入所有的楼号
+  //该函数查表以设置按钮
+  function find_tables()
+  {
+  building=Array();
+  $.get('admin.php',
+  {
+    style:"find_tables",
+  },function(results)
+  {
+    //console.log(results);
+  //先遍历完拿到多少building
+  var json=jQuery.parseJSON(results);
+  //console.log(json);
+  for(var i=0;i<json.length;i++){
+      building.push(json[i].Tables_in_meeting_room);
+  }
+  var li_str="";
+  for(var i=0;i<building.length;i++)
+  {
+    //console.log(building[i]);
+    //这里拼一个带参改 href=temp.html?building=first;
+    li_str=li_str+"<li><a href=\"admin.html?building="+escape(building[i])+"\">"+building[i]+"</a></li>";
+  }
+    li_str=li_str+"<button class=\"btn btn-default \"  data-toggle = \"modal\"  data-target=\"#add_building_modal\">增加楼号</button>";
+    li_str=li_str+"<button class=\"btn btn-default \"  data-toggle = \"modal\"  data-target=\"#del_building_modal\" onclick='del_building(this)'>删除楼号</button>";
+    //console.log(li_str);
+    $('#add_building_li').html("");
+    $('#add_building_li').append(li_str);
+    //拿到多少栋楼
+  }); 
+  }
+  function ShowTip(tip, type) 
+  {
+    var $tip = $('#tip');
+    if ($tip.length == 0) {
+    // 设置样式，也可以定义在css文件中
+        $tip = $('<span id="tip" style="position:fixed;top:50px;left: 50%;z-index:9999;height: 35px;padding: 0 20px;line-height: 35px;"></span>');
+        $('body').append($tip);
+    }
+    $tip.stop(true).prop('class', 'alert alert-' + type).text(tip).css('margin-left', -$tip.outerWidth() / 2).fadeIn(500).delay(2000).fadeOut(500);//设置显示位置和显示时间和消失时间
+  }
+  function ShowMsg(msg)
+  {
+      ShowTip(msg, 'info');
+  }  
+  function ShowSuccess(msg)
+  {
+      ShowTip(msg, 'success');
+  }
+  
+  function ShowFailure(msg)
+  {
+      ShowTip(msg, 'danger');
+  }
+  
+  function ShowWarn(msg, $focus, clear)
+  {
+      ShowTip(msg, 'warning');
+      if ($focus) {
+  　　　　 $focus.focus();
+      　　if (clear) $focus.val('');
+  　　 }
+      return false;
+  }
+  //删除楼号模态框的载入文件
+  function del_building(elem)
+  {
+    $('#del_building_content').html('');
+    var str=""
+    for(var i=0;i<building.length;i++){
+      str=str+'<div class="checkbox"><label><input type="checkbox" value="'+building[i]+'">'+building[i]+'</label></div>'
+      //console.log(building[i]);
+    }
+    $('#del_building_content').append(str);
+  }
+
+
+</script>
+      
+
+
+
+
